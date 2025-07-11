@@ -287,13 +287,13 @@ body[data-theme='dark'] .hero-nav {
 
 @media (max-width: 700px) {
   .hero-content {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0 0.2rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
   }
   .hero-img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
   .hero-name {
     font-size: 1.1rem;
@@ -316,6 +316,10 @@ body[data-theme='dark'] .hero-nav {
   .portfolio-section {
     padding: 1.1rem 0.7rem 1.1rem 0.7rem;
     margin-bottom: 1.2rem;
+  }
+  .hero-section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
   .portfolio-section h2 {
     font-size: 1.1rem;
