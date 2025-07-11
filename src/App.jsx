@@ -2,7 +2,7 @@ import './App.css'
 import profileImg from './assets/profile.jpg'
 import qaAward from './assets/qa-award.jpg';
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaPython, FaJs, FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaAngular, FaGitAlt, FaJira, FaCloud, FaTools, FaPhone, FaEnvelope, FaMapMarkerAlt, FaLinkedin, FaGithub } from 'react-icons/fa';
+import { FaPython, FaJs, FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaAngular, FaGitAlt, FaJira, FaCloud, FaTools, FaPhone, FaEnvelope, FaMapMarkerAlt, FaLinkedin, FaGithub, FaSun, FaMoon } from 'react-icons/fa';
 import { SiMysql, SiMongodb, SiSelenium, SiTeamcity } from 'react-icons/si';
 import { useState, useEffect, useMemo } from 'react';
 
@@ -186,11 +186,22 @@ const AnimatedText = ({ text, emoji, emojiAnimation }) => {
   );
 };
 
+const ThemeToggle = ({ theme, toggleTheme }) => (
+  <button onClick={toggleTheme} className="theme-toggle">
+    {theme === 'dark' ? <FaSun /> : <FaMoon />}
+  </button>
+);
+
 
 function App() {
   const [flippedCards, setFlippedCards] = useState({});
   const [activeFilter, setActiveFilter] = useState('All');
   const [showGreeting, setShowGreeting] = useState(true);
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return savedTheme || (userPrefersDark ? 'dark' : 'light');
+  });
 
   const greeting = useMemo(() => getGreeting(), []);
 
@@ -211,6 +222,11 @@ function App() {
 
 
   useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShowGreeting(false);
     }, 4000); // Increased duration for typewriter effect
@@ -223,26 +239,33 @@ function App() {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  };
+
   return (
     <div>
       <header className="header">
-      </header>
-      <motion.nav
-        className="hero-nav"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.7 }}
-      >
-        {sections.map((section) => (
-          <button
-            key={section.id}
-            className="nav-link"
-            onClick={() => scrollToSection(section.id)}
+        <div className="header-content">
+          <motion.nav
+            className="hero-nav"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
           >
-            {section.label}
-          </button>
-        ))}
-      </motion.nav>
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                className="nav-link"
+                onClick={() => scrollToSection(section.id)}
+              >
+                {section.label}
+              </button>
+            ))}
+          </motion.nav>
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+        </div>
+      </header>
       <main>
         <div className="content-wrapper">
           <div className="hero-section">
