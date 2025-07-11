@@ -65,7 +65,7 @@ const skillsData = [
   {
     category: 'Programming Languages',
     skills: [
-      { name: 'Python', icon: <FaPython />, color: '#3776AB' },
+      { name: 'Python', icon: <FaPython />, color: '#FFD43B', textColor: '#4584B6' },
       { name: 'JavaScript', icon: <FaJs />, color: '#F7DF1E', textColor: '#000' }
     ]
   },
@@ -114,6 +114,9 @@ const skillsData = [
   }
 ];
 
+const allSkills = skillsData.flatMap(cat => cat.skills.map(skill => ({ ...skill, category: cat.category })));
+const skillCategories = ['All', ...skillsData.map(cat => cat.category)];
+
 const achievementsData = [
   {
     title: 'Best QA Product Deliverable Member',
@@ -135,8 +138,10 @@ const contactData = [
   { icon: <FaGithub />, text: 'GitHub', href: 'https://github.com/yrohit08' }
 ];
 
+
 function App() {
   const [flippedCards, setFlippedCards] = useState({});
+  const [activeFilter, setActiveFilter] = useState('All');
 
   const handleFlip = (index) => {
     if (achievementsData[index].image) {
@@ -278,23 +283,27 @@ function App() {
           </motion.section>
           <motion.section id="skills" className="portfolio-section" variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
             <h2>Technical Skills</h2>
-            <div className="skills-mini-cards-grid">
-              {skillsData.map((category, index) => (
-                <div className="skills-category" key={index}>
-                  <h4>{category.category}</h4>
-                  <div className="mini-badges">
-                    {category.skills.map((skill, i) => (
-                      <span
-                        key={i}
-                        className="mini-badge"
-                        style={skill.color ? { backgroundColor: skill.color, color: skill.textColor || '#fff', borderColor: 'transparent' } : {}}
-                      >
-                        {skill.icon && <span className="skill-icon">{skill.icon}</span>}
-                        {skill.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+            <div className="filter-buttons">
+              {skillCategories.map(category => (
+                <button
+                  key={category}
+                  className={`filter-button ${activeFilter === category ? 'active' : ''}`}
+                  onClick={() => setActiveFilter(category)}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+            <div className="skills-container">
+              {allSkills.map((skill, i) => (
+                <span
+                  key={i}
+                  className={`mini-badge ${activeFilter !== 'All' && activeFilter !== skill.category ? 'dimmed' : ''}`}
+                  style={skill.color ? { '--skill-bg-color': skill.color, '--skill-text-color': skill.textColor || '#fff' } : {}}
+                >
+                  {skill.icon && <span className="skill-icon">{skill.icon}</span>}
+                  {skill.name}
+                </span>
               ))}
             </div>
           </motion.section>
