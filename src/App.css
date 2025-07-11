@@ -52,6 +52,9 @@ body[data-theme='dark'] .header {
 }
 nav {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
   gap: 1.5rem; /* Increased gap */
 }
 .nav-link {
@@ -289,12 +292,12 @@ body[data-theme='dark'] .hero-nav {
   .header-content {
     height: auto;
     min-height: 70px;
-    padding: 0.75rem 3.5rem 0.75rem 0.75rem; /* Adjust padding for mobile */
+    padding: 0.75rem 1rem;
   }
   .hero-content {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    padding: 0 1rem;
+    padding: 1rem;
   }
   .hero-img {
     width: 120px;
@@ -314,6 +317,7 @@ body[data-theme='dark'] .hero-nav {
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 0.4rem 0 0.1rem 0;
+    justify-content: center;
   }
   main {
     padding: 0.7rem 0.2rem 1.2rem 0.2rem;
@@ -325,6 +329,7 @@ body[data-theme='dark'] .hero-nav {
   .hero-section {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+    overflow: visible;
   }
   .portfolio-section h2 {
     font-size: 1.1rem;
@@ -785,8 +790,6 @@ body[data-theme='dark'] .footer-credits {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  position: absolute;
-  right: 2rem;
 }
 
 .theme-toggle:hover {

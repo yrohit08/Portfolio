@@ -262,8 +262,8 @@ function App() {
                 {section.label}
               </button>
             ))}
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </motion.nav>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
         </div>
       </header>
       <main>
