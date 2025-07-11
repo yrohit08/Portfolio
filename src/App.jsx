@@ -1,10 +1,10 @@
 import './App.css'
 import profileImg from './assets/profile.jpg'
 import qaAward from './assets/qa-award.jpg';
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { FaPython, FaJs, FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaAngular, FaGitAlt, FaJira, FaCloud, FaTools, FaPhone, FaEnvelope, FaMapMarkerAlt, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { SiMysql, SiMongodb, SiSelenium, SiTeamcity } from 'react-icons/si';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 const sections = [
   { id: 'summary', label: 'Summary' },
@@ -138,10 +138,84 @@ const contactData = [
   { icon: <FaGithub />, text: 'GitHub', href: 'https://github.com/yrohit08' }
 ];
 
+const getGreeting = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return { text: 'Good morning', emoji: '☀️' };
+  if (hour < 18) return { text: 'Good afternoon', emoji: '👋' };
+  return { text: 'Good evening', emoji: '🌙' };
+};
+
+const AnimatedText = ({ text, emoji, emojiAnimation }) => {
+  const letters = Array.from(text);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  return (
+    <motion.h1
+      className="hero-name"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      key={text}
+    >
+      {letters.map((letter, index) => (
+        <motion.span variants={childVariants} key={index}>
+          {letter === ' ' ? '\u00A0' : letter}
+        </motion.span>
+      ))}
+      <motion.span
+        style={{ display: 'inline-block', marginLeft: '0.5rem' }}
+        variants={childVariants}
+        animate={emojiAnimation.animate}
+        transition={emojiAnimation.transition}
+      >
+        {emoji}
+      </motion.span>
+    </motion.h1>
+  );
+};
+
 
 function App() {
   const [flippedCards, setFlippedCards] = useState({});
   const [activeFilter, setActiveFilter] = useState('All');
+  const [showGreeting, setShowGreeting] = useState(true);
+
+  const greeting = useMemo(() => getGreeting(), []);
+
+  const emojiAnimations = {
+    '☀️': {
+      animate: { scale: [1, 1.2, 1], filter: ['brightness(1)', 'brightness(1.5)', 'brightness(1)'] },
+      transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' }
+    },
+    '👋': {
+      animate: { rotate: [0, 14, -8, 14, 0] },
+      transition: { duration: 2.5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.5 }
+    },
+    '🌙': {
+      animate: { scale: [1, 1.1, 1], filter: ['brightness(1)', 'brightness(1.2)', 'brightness(1)'] },
+      transition: { duration: 3, repeat: Infinity, ease: 'easeInOut' }
+    }
+  };
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowGreeting(false);
+    }, 4000); // Increased duration for typewriter effect
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleFlip = (index) => {
     if (achievementsData[index].image) {
@@ -187,12 +261,35 @@ function App() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 0.4 }}
               >
-                <h1 className="hero-name">Sri Rohit Yadlapalli</h1>
-                <div className="hero-divider"></div>
-                <h3 className="hero-title">Software Quality Assurance Engineer</h3>
-                <p className="hero-intro">
+                <AnimatePresence mode="wait">
+                  {showGreeting ? (
+                    <AnimatedText 
+                      text={greeting.text} 
+                      emoji={greeting.emoji}
+                      emojiAnimation={emojiAnimations[greeting.emoji]}
+                    />
+                  ) : (
+                    <motion.div
+                      key="name"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <h1 className="hero-name">Sri Rohit Yadlapalli</h1>
+                      <div className="hero-divider"></div>
+                      <h3 className="hero-title">Software Quality Assurance Engineer</h3>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <motion.p
+                  className="hero-intro"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: showGreeting ? 4.5 : 0.5 }}
+                >
                   Passionate about quality, automation, and delivering robust software solutions. Experienced in cross-platform testing, automation frameworks, and collaborating with global teams to drive product excellence.
-                </p>
+                </motion.p>
               </motion.div>
             </div>
           </div>
