@@ -39,10 +39,10 @@ body[data-theme='dark'] .header {
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
-  align-items: center;
-  justify-content: center; /* Center nav items */
+  align-items: left;
+  justify-content: left; 
   padding: 0 2rem;
-  height: 70px; /* Give header a fixed height */
+  height: 70px;
   position: relative;
 }
 .portfolio-name {
@@ -308,7 +308,7 @@ body[data-theme='dark'] .hero-nav {
   }
   .hero-text {
     max-width: 100%;
-    text-align: center;
+    text-align: left;
   }
   .hero-nav {
     flex-wrap: wrap;
