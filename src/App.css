@@ -286,6 +286,11 @@ body[data-theme='dark'] .hero-nav {
 }
 
 @media (max-width: 700px) {
+  .header-content {
+    height: auto;
+    min-height: 70px;
+    padding: 0.75rem 3.5rem 0.75rem 0.75rem; /* Adjust padding for mobile */
+  }
   .hero-content {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -329,6 +334,9 @@ body[data-theme='dark'] .hero-nav {
     width: 32px;
     height: 3px;
     margin: 0.3rem 0 0 0;
+  }
+  .theme-toggle {
+    right: 0.75rem;
   }
 }
 .skills-grid {
